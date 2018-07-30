@@ -6,7 +6,7 @@
 > To retrieve the survey / folder list: 
 
 ```shell
-curl -X GET -H "Content-type: application/json" -H "Authorization: Bearer <ACCESS_TOKEN>"  ^
+curl -X GET -H "Content-type: application/json" -H "Authorization: Bearer {ACCESS_TOKEN}"  ^
 "{ACCOUNT_NAME}/roles"
 ```
 

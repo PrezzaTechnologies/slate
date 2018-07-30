@@ -25,6 +25,7 @@ includes:
   - files
   - system-settings
   - license-limits
+  - single-sign-on
   - errors
   
 
