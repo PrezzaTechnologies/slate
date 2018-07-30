@@ -236,13 +236,13 @@
             <a href="#contacts" class="toc-h1 toc-link" data-title="Contacts">Contacts</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#create-contact" class="toc-h2 toc-link" data-title="Create Contact">Create Contact</a>
-                  </li>
-                  <li>
                     <a href="#get-contacts" class="toc-h2 toc-link" data-title="Get Contacts">Get Contacts</a>
                   </li>
                   <li>
                     <a href="#get-contact" class="toc-h2 toc-link" data-title="Get Contact">Get Contact</a>
+                  </li>
+                  <li>
+                    <a href="#create-contact" class="toc-h2 toc-link" data-title="Create Contact">Create Contact</a>
                   </li>
                   <li>
                     <a href="#edit-contact" class="toc-h2 toc-link" data-title="Edit Contact">Edit Contact</a>
@@ -622,6 +622,14 @@
               </ul>
           </li>
           <li>
+            <a href="#single-sign-on" class="toc-h1 toc-link" data-title="Single Sign On">Single Sign On</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#json-web-token-jwt" class="toc-h2 toc-link" data-title="JSON Web Token (JWT)">JSON Web Token (JWT)</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
           </li>
       </ul>
@@ -674,7 +682,7 @@ You must replace <code>{ACCOUNT_NAME}</code> with your account name.
 <blockquote>
 <p>To retrieve the survey / folder list: </p>
 </blockquote>
-<pre class="highlight shell tab-shell"><code>curl -X GET -H <span class="s2">"Content-type: application/json"</span> -H <span class="s2">"Authorization: Bearer &lt;ACCESS_TOKEN&gt;"</span>  ^
+<pre class="highlight shell tab-shell"><code>curl -X GET -H <span class="s2">"Content-type: application/json"</span> -H <span class="s2">"Authorization: Bearer {ACCESS_TOKEN}"</span>  ^
 <span class="s2">"{ACCOUNT_NAME}/roles"</span>
 </code></pre>
 <blockquote>
@@ -694,7 +702,216 @@ You must replace <code>{ACCOUNT_NAME}</code> with your account name.
 <p>This endpoint returns all roles available to users. These roles can then be utilized in the create / update contact methods to assign roles to contacts.</p>
 <h3 id='http-request'>HTTP Request</h3>
 <p><code>GET {ACCOUNT_NAME}/roles</code></p>
-<h1 id='contacts'>Contacts</h1><h2 id='create-contact'>Create Contact</h2><h2 id='get-contacts'>Get Contacts</h2><h2 id='get-contact'>Get Contact</h2><h2 id='edit-contact'>Edit Contact</h2><h2 id='delete-contact'>Delete Contact</h2><h2 id='get-contact-group-memberships'>Get Contact Group Memberships</h2><h2 id='add-contact-to-group'>Add Contact to Group</h2><h2 id='remove-contact-from-group'>Remove Contact from Group</h2><h2 id='get-contacts-roles'>Get Contacts Roles</h2><h2 id='add-roles-to-contact'>Add Roles to Contact</h2><h2 id='remove-contact-roles'>Remove Contact Roles</h2><h2 id='get-contact-profile-data'>Get Contact Profile Data</h2><h2 id='edit-contact-profile-data'>Edit Contact Profile Data</h2><h1 id='contact-list-access'>Contact List Access</h1><h2 id='get-contact-list-acl'>Get Contact List ACL</h2><h2 id='get-contact-list-acl-entry'>Get Contact List ACL Entry</h2><h2 id='add-contact-list-acl-entry'>Add Contact List ACL Entry</h2><h2 id='edit-contact-list-acl-entry'>Edit Contact List ACL Entry</h2><h2 id='delete-contact-list-acl-entry'>Delete Contact List ACL Entry</h2><h2 id='get-default-access-policy'>Get Default Access Policy</h2><h2 id='edit-default-access-policy'>Edit Default Access Policy</h2><h1 id='contact-favorites'>Contact Favorites</h1><h2 id='get-favorite-surveys'>Get Favorite Surveys</h2><h2 id='add-favorite-survey'>Add Favorite Survey</h2><h2 id='delete-favorite-survey'>Delete Favorite Survey</h2><h1 id='contact-groups'>Contact Groups</h1><h2 id='get-groups'>Get Groups</h2><h2 id='get-group'>Get Group</h2><h2 id='get-group-members'>Get Group Members</h2><h2 id='create-group'>Create Group</h2><h2 id='add-contact-to-group'>Add Contact to Group</h2><h2 id='edit-group'>Edit Group</h2><h2 id='edit-group-members'>Edit Group Members</h2><h2 id='delete-group-member'>Delete Group Member</h2><h2 id='delete-group'>Delete Group</h2><h1 id='contact-groups-security'>Contact Groups Security</h1><h2 id='get-group-acl'>Get Group ACL</h2><h2 id='get-group-acl-entry'>Get Group ACL Entry</h2><h2 id='add-group-acl-entry'>Add Group ACL Entry</h2><h2 id='edit-group-acl-entry'>Edit Group ACL Entry</h2><h2 id='delete-group-acl-entry'>Delete Group ACL Entry</h2><h2 id='get-default-access-policy'>Get Default Access Policy</h2><h2 id='edit-default-access-policy'>Edit Default Access Policy</h2><h1 id='survey-list'>Survey List</h1><h2 id='get-survey-list'>Get Survey List</h2>
+<h1 id='contacts'>Contacts</h1>
+<p>Contacts in Checkbox 7 take the place of &quot;Users&quot; in Checkbox 6. Contacts are both administrative users and survey respondents.</p>
+
+<p>You can utilize this endpoint to retrieve contact data, edit contacts, and delete contacts.</p>
+<h2 id='get-contacts'>Get Contacts</h2>
+<blockquote>
+<p>To get a list of contacts: </p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X GET -H <span class="s2">"Content-type: application/json"</span> -H <span class="s2">"Authorization: Bearer {ACCESS_TOKEN}"</span> ^
+<span class="s2">"{ACCOUNT_NAME}/contacts?search_text=admin&amp;sort_ascending=True&amp;page_size=2&amp;page_num=3"</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this: </p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">  
+   </span><span class="s2">"total_count"</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"items"</span><span class="p">:[</span><span class="w">  
+      </span><span class="p">{</span><span class="w">  
+         </span><span class="s2">"unique_identifier"</span><span class="p">:</span><span class="s2">"Test"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"user_name"</span><span class="p">:</span><span class="s2">"Test"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"email"</span><span class="p">:</span><span class="s2">"jon.doe@gmail.com"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"status"</span><span class="p">:</span><span class="s2">"Active"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"paging_info"</span><span class="p">:{</span><span class="w">  
+      </span><span class="s2">"page_size"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"page_num"</span><span class="p">:</span><span class="mi">1</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"has_next"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"has_previous"</span><span class="p">:</span><span class="kc">false</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint will return a paged, filtered list of contacts.</p>
+<h3 id='http-request'>HTTP Request</h3>
+<p><code>GET {ACCOUNT_NAME}/contacts</code></p>
+<h3 id='query-parameters'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>search_text</td>
+<td>False</td>
+<td>string</td>
+<td>Used for searching by name</td>
+</tr>
+<tr>
+<td>sort_ascending</td>
+<td>False</td>
+<td>bool</td>
+<td>Sort returned by username ascending</td>
+</tr>
+<tr>
+<td>page_size</td>
+<td>False</td>
+<td>int</td>
+<td>Size of pages to be returned</td>
+</tr>
+<tr>
+<td>page_num</td>
+<td>False</td>
+<td>int</td>
+<td>Number of page to be returned</td>
+</tr>
+</tbody></table>
+<h2 id='get-contact'>Get Contact</h2>
+<blockquote>
+<p>To get a list of contacts: </p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X GET -H <span class="s2">"Content-type: application/json"</span> -H <span class="s2">"Authorization: Bearer {ACCESS_TOKEN}"</span> ^
+<span class="s2">"{ACCOUNT_NAME}/contacts/Test"</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this: </p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">  
+   </span><span class="s2">"unique_identifier"</span><span class="p">:</span><span class="s2">"Test"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"user_name"</span><span class="p">:</span><span class="s2">"Test"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"email"</span><span class="p">:</span><span class="s2">"jon.doe@gmail.com"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"status"</span><span class="p">:</span><span class="s2">"Active"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint will return the contact data for a single contact specified by its unique identifier .</p>
+
+<p><code>GET {ACCOUNT_NAME}/contacts/{UNIQUE_IDENTIFIER}</code></p>
+<h2 id='create-contact'>Create Contact</h2>
+<blockquote>
+<p>To create the contact: </p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST -H <span class="s2">"Content-type: application/json"</span> -H <span class="s2">"Authorization: Bearer {ACCESS_TOKEN}"</span> ^
+ -d <span class="s1">'{ "user_name": "newuser", "email": "newuser@email.com", "password":"pa$$w0rd" }'</span> ^
+ <span class="s2">"{ACCOUNT_NAME}/contacts"</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">  
+   </span><span class="s2">"unique_identifier"</span><span class="p">:</span><span class="s2">"Test1"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"user_name"</span><span class="p">:</span><span class="s2">"Test1"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"email"</span><span class="p">:</span><span class="s2">"jon.doe@gmail.com"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"status"</span><span class="p">:</span><span class="s2">"Active"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint will create a contact with the username, email, and password specified. </p>
+<h3 id='http-request-2'>HTTP Request</h3>
+<p><code>POST {ACCOUNT_NAME}/contacts</code></p>
+<h3 id='request-body-arguments'>Request Body Arguments</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>user_name</td>
+<td>True</td>
+<td>string</td>
+<td>Contact name</td>
+</tr>
+<tr>
+<td>password</td>
+<td>True</td>
+<td>string</td>
+<td>Contact Password</td>
+</tr>
+<tr>
+<td>email</td>
+<td>True</td>
+<td>string</td>
+<td>Contact Email</td>
+</tr>
+</tbody></table>
+<h2 id='edit-contact'>Edit Contact</h2>
+<blockquote>
+<p>To edit the contact: </p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST -H <span class="s2">"Content-type: application/json"</span> -H <span class="s2">"Authorization: Bearer {ACCESS_TOKEN}"</span> ^
+ -d <span class="s1">'{ "user_name": "test22", "email": "newuser2@email.com", "password":"pa$$w0rd", "status": "Active" }'</span> ^
+ <span class="s2">"{ACCOUNT_NAME}/contacts/test1"</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">  
+   </span><span class="s2">"unique_identifier"</span><span class="p">:</span><span class="s2">"Test22"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"user_name"</span><span class="p">:</span><span class="s2">"Test1"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"email"</span><span class="p">:</span><span class="s2">"jon.doe@gmail.com"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"status"</span><span class="p">:</span><span class="s2">"Active"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint can be utilized to edit a contacts username, email or password, or enable / disable the contacts account. Contact profile property data can be edited using the edit contact profile data endpoint documented below.</p>
+<h3 id='http-request-3'>HTTP Request</h3>
+<p><code>PUT {ACCOUNT_NAME}/contacts/{UNIQUE_IDENTIFIER}</code></p>
+<h3 id='request-body-arguments-2'>Request Body Arguments</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>user_name</td>
+<td>False</td>
+<td>string</td>
+<td>Contact name</td>
+</tr>
+<tr>
+<td>password</td>
+<td>False</td>
+<td>string</td>
+<td>Contact Password</td>
+</tr>
+<tr>
+<td>email</td>
+<td>False</td>
+<td>string</td>
+<td>Contact Email</td>
+</tr>
+<tr>
+<td>status</td>
+<td>False</td>
+<td>enum</td>
+<td>For status specifying (default=active): Active or LockedOut</td>
+</tr>
+</tbody></table>
+<h2 id='delete-contact'>Delete Contact</h2>
+<blockquote>
+<p>To delete the contact</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X DELETE -H <span class="s2">"Content-type: application/json"</span> -H <span class="s2">"Authorization: Bearer {ACCESS_TOKEN}"</span> ^
+ <span class="s2">"{ACCOUNT_NAME}/contacts/test1"</span>
+</code></pre>
+<blockquote>
+<p>The above command returns an HTTP status code of 200 OK when successful</p>
+</blockquote>
+
+<p>This endpoint can be utilized to delete a contact. This will not prompt for a confirmation and this action cannot be undone. </p>
+<h3 id='http-request-4'>HTTP Request</h3>
+<p><code>DELETE {ACCOUNT_NAME}/contacts/{UNIQUE_IDENTIFIER}</code></p>
+
+<aside class="warning">Deleting a contact is permanent. Once a contact is deleted they cannot be restored.</aside>
+<h2 id='get-contact-group-memberships'>Get Contact Group Memberships</h2><h2 id='add-contact-to-group'>Add Contact to Group</h2><h2 id='remove-contact-from-group'>Remove Contact from Group</h2><h2 id='get-contacts-roles'>Get Contacts Roles</h2><h2 id='add-roles-to-contact'>Add Roles to Contact</h2><h2 id='remove-contact-roles'>Remove Contact Roles</h2><h2 id='get-contact-profile-data'>Get Contact Profile Data</h2><h2 id='edit-contact-profile-data'>Edit Contact Profile Data</h2><h1 id='contact-list-access'>Contact List Access</h1><h2 id='get-contact-list-acl'>Get Contact List ACL</h2><h2 id='get-contact-list-acl-entry'>Get Contact List ACL Entry</h2><h2 id='add-contact-list-acl-entry'>Add Contact List ACL Entry</h2><h2 id='edit-contact-list-acl-entry'>Edit Contact List ACL Entry</h2><h2 id='delete-contact-list-acl-entry'>Delete Contact List ACL Entry</h2><h2 id='get-default-access-policy'>Get Default Access Policy</h2><h2 id='edit-default-access-policy'>Edit Default Access Policy</h2><h1 id='contact-favorites'>Contact Favorites</h1><h2 id='get-favorite-surveys'>Get Favorite Surveys</h2><h2 id='add-favorite-survey'>Add Favorite Survey</h2><h2 id='delete-favorite-survey'>Delete Favorite Survey</h2><h1 id='contact-groups'>Contact Groups</h1><h2 id='get-groups'>Get Groups</h2><h2 id='get-group'>Get Group</h2><h2 id='get-group-members'>Get Group Members</h2><h2 id='create-group'>Create Group</h2><h2 id='add-contact-to-group'>Add Contact to Group</h2><h2 id='edit-group'>Edit Group</h2><h2 id='edit-group-members'>Edit Group Members</h2><h2 id='delete-group-member'>Delete Group Member</h2><h2 id='delete-group'>Delete Group</h2><h1 id='contact-groups-security'>Contact Groups Security</h1><h2 id='get-group-acl'>Get Group ACL</h2><h2 id='get-group-acl-entry'>Get Group ACL Entry</h2><h2 id='add-group-acl-entry'>Add Group ACL Entry</h2><h2 id='edit-group-acl-entry'>Edit Group ACL Entry</h2><h2 id='delete-group-acl-entry'>Delete Group ACL Entry</h2><h2 id='get-default-access-policy'>Get Default Access Policy</h2><h2 id='edit-default-access-policy'>Edit Default Access Policy</h2><h1 id='survey-list'>Survey List</h1><h2 id='get-survey-list'>Get Survey List</h2>
 <blockquote>
 <p>To retrieve the survey / folder list: </p>
 </blockquote>
@@ -793,7 +1010,7 @@ You must replace <code>{ACCOUNT_NAME}</code> with your account name.
 <td>Used to filter by survey status</td>
 </tr>
 </tbody></table>
-<h1 id='survey-folders'>Survey Folders</h1><h2 id='get-folders'>Get Folders</h2><h2 id='get-folder'>Get Folder</h2><h2 id='create-folder'>Create Folder</h2><h2 id='edit-folder'>Edit Folder</h2><h2 id='delete-folder'>Delete Folder</h2><h2 id='get-folder-surveys'>Get Folder Surveys</h2><h2 id='get-folder-acl'>Get Folder ACL</h2><h2 id='get-folder-acl-entry'>Get Folder ACL Entry</h2><h2 id='add-folder-acl-entry'>Add Folder ACL Entry</h2><h2 id='edit-folder-acl-entry'>Edit Folder ACL Entry</h2><h2 id='delete-folder-acl-entry'>Delete Folder ACL Entry</h2><h2 id='get-folder-default-access-policy'>Get Folder Default Access Policy</h2><h2 id='edit-folder-default-access-policy'>Edit Folder Default Access Policy</h2><h1 id='surveys'>Surveys</h1><h2 id='get-surveys'>Get Surveys</h2><h2 id='get-survey'>Get Survey</h2><h2 id='create-survey'>Create Survey</h2><h2 id='edit-survey'>Edit Survey</h2><h2 id='move-survey-to-folder'>Move Survey to Folder</h2><h2 id='archive-survey'>Archive Survey</h2><h2 id='unarchive-survey'>Unarchive Survey</h2><h2 id='delete-survey'>Delete Survey</h2><h1 id='survey-settings'>Survey Settings</h1><h2 id='get-behavior-settings'>Get Behavior Settings</h2><h2 id='edit-behavior-settings'>Edit Behavior Settings</h2><h2 id='get-appearance-settings'>Get Appearance Settings</h2><h2 id='edit-appearance-settings'>Edit Appearance Settings</h2><h2 id='get-language-settings'>Get Language Settings</h2><h2 id='edit-language-settings'>Edit Language Settings</h2><h1 id='survey-access'>Survey Access</h1><h2 id='get-survey-acl'>Get Survey ACL</h2><h2 id='get-survey-acl-entry'>Get Survey ACL Entry</h2><h2 id='add-survey-acl-entry'>Add Survey ACL Entry</h2><h2 id='edit-survey-acl-entry'>Edit Survey ACL Entry</h2><h2 id='delete-survey-acl-entry'>Delete Survey ACL Entry</h2><h2 id='edit-survey-default-access-policy'>Edit Survey Default Access Policy</h2><h1 id='survey-pages'>Survey Pages</h1><h2 id='get-pages'>Get Pages</h2><h2 id='get-page'>Get Page</h2><h2 id='create-page'>Create Page</h2><h2 id='edit-page'>Edit Page</h2><h2 id='edit-page-position'>Edit Page Position</h2><h2 id='delete-page'>Delete Page</h2><h2 id='get-page-items'>Get Page Items</h2><h1 id='survey-items'>Survey Items</h1><h2 id='get-items'>Get Items</h2><h2 id='get-item'>Get Item</h2><h2 id='edit-item'>Edit Item</h2><h2 id='move-item'>Move Item</h2><h2 id='delete-item'>Delete Item</h2><h1 id='survey-language-settings'>Survey Language Settings</h1><h2 id='get-survey-languages'>Get Survey Languages</h2><h2 id='get-survey-language'>Get Survey Language</h2><h2 id='add-survey-language'>Add Survey Language</h2><h2 id='edit-survey-language'>Edit Survey Language</h2><h2 id='remove-survey-language'>Remove Survey Language</h2><h1 id='files'>Files</h1><h2 id='get-files-metadata'>Get Files Metadata</h2><h2 id='get-file-metadata'>Get File Metadata</h2><h2 id='get-file-content'>Get File Content</h2><h2 id='upload-file'>Upload File</h2><h2 id='create-external-file-metadata'>Create External File Metadata</h2><h1 id='system-settings'>System Settings</h1><h2 id='get-file-upload-settings'>Get File Upload Settings</h2><h2 id='edit-file-upload-settings'>Edit File Upload Settings</h2><h2 id='get-javascript-item-settings'>Get Javascript Item Settings</h2><h2 id='edit-javascript-item-settings'>Edit Javascript Item Settings</h2><h2 id='get-profile-property-list'>Get Profile Property List</h2><h2 id='get-contact-security-settings'>Get Contact Security Settings</h2><h2 id='edit-contact-security-settings'>Edit Contact Security Settings</h2><h1 id='license-limits'>License Limits</h1><h2 id='get-license-limits'>Get License Limits</h2><h1 id='errors'>Errors</h1>
+<h1 id='survey-folders'>Survey Folders</h1><h2 id='get-folders'>Get Folders</h2><h2 id='get-folder'>Get Folder</h2><h2 id='create-folder'>Create Folder</h2><h2 id='edit-folder'>Edit Folder</h2><h2 id='delete-folder'>Delete Folder</h2><h2 id='get-folder-surveys'>Get Folder Surveys</h2><h2 id='get-folder-acl'>Get Folder ACL</h2><h2 id='get-folder-acl-entry'>Get Folder ACL Entry</h2><h2 id='add-folder-acl-entry'>Add Folder ACL Entry</h2><h2 id='edit-folder-acl-entry'>Edit Folder ACL Entry</h2><h2 id='delete-folder-acl-entry'>Delete Folder ACL Entry</h2><h2 id='get-folder-default-access-policy'>Get Folder Default Access Policy</h2><h2 id='edit-folder-default-access-policy'>Edit Folder Default Access Policy</h2><h1 id='surveys'>Surveys</h1><h2 id='get-surveys'>Get Surveys</h2><h2 id='get-survey'>Get Survey</h2><h2 id='create-survey'>Create Survey</h2><h2 id='edit-survey'>Edit Survey</h2><h2 id='move-survey-to-folder'>Move Survey to Folder</h2><h2 id='archive-survey'>Archive Survey</h2><h2 id='unarchive-survey'>Unarchive Survey</h2><h2 id='delete-survey'>Delete Survey</h2><h1 id='survey-settings'>Survey Settings</h1><h2 id='get-behavior-settings'>Get Behavior Settings</h2><h2 id='edit-behavior-settings'>Edit Behavior Settings</h2><h2 id='get-appearance-settings'>Get Appearance Settings</h2><h2 id='edit-appearance-settings'>Edit Appearance Settings</h2><h2 id='get-language-settings'>Get Language Settings</h2><h2 id='edit-language-settings'>Edit Language Settings</h2><h1 id='survey-access'>Survey Access</h1><h2 id='get-survey-acl'>Get Survey ACL</h2><h2 id='get-survey-acl-entry'>Get Survey ACL Entry</h2><h2 id='add-survey-acl-entry'>Add Survey ACL Entry</h2><h2 id='edit-survey-acl-entry'>Edit Survey ACL Entry</h2><h2 id='delete-survey-acl-entry'>Delete Survey ACL Entry</h2><h2 id='edit-survey-default-access-policy'>Edit Survey Default Access Policy</h2><h1 id='survey-pages'>Survey Pages</h1><h2 id='get-pages'>Get Pages</h2><h2 id='get-page'>Get Page</h2><h2 id='create-page'>Create Page</h2><h2 id='edit-page'>Edit Page</h2><h2 id='edit-page-position'>Edit Page Position</h2><h2 id='delete-page'>Delete Page</h2><h2 id='get-page-items'>Get Page Items</h2><h1 id='survey-items'>Survey Items</h1><h2 id='get-items'>Get Items</h2><h2 id='get-item'>Get Item</h2><h2 id='edit-item'>Edit Item</h2><h2 id='move-item'>Move Item</h2><h2 id='delete-item'>Delete Item</h2><h1 id='survey-language-settings'>Survey Language Settings</h1><h2 id='get-survey-languages'>Get Survey Languages</h2><h2 id='get-survey-language'>Get Survey Language</h2><h2 id='add-survey-language'>Add Survey Language</h2><h2 id='edit-survey-language'>Edit Survey Language</h2><h2 id='remove-survey-language'>Remove Survey Language</h2><h1 id='files'>Files</h1><h2 id='get-files-metadata'>Get Files Metadata</h2><h2 id='get-file-metadata'>Get File Metadata</h2><h2 id='get-file-content'>Get File Content</h2><h2 id='upload-file'>Upload File</h2><h2 id='create-external-file-metadata'>Create External File Metadata</h2><h1 id='system-settings'>System Settings</h1><h2 id='get-file-upload-settings'>Get File Upload Settings</h2><h2 id='edit-file-upload-settings'>Edit File Upload Settings</h2><h2 id='get-javascript-item-settings'>Get Javascript Item Settings</h2><h2 id='edit-javascript-item-settings'>Edit Javascript Item Settings</h2><h2 id='get-profile-property-list'>Get Profile Property List</h2><h2 id='get-contact-security-settings'>Get Contact Security Settings</h2><h2 id='edit-contact-security-settings'>Edit Contact Security Settings</h2><h1 id='license-limits'>License Limits</h1><h2 id='get-license-limits'>Get License Limits</h2><h1 id='single-sign-on'>Single Sign On</h1><h2 id='json-web-token-jwt'>JSON Web Token (JWT)</h2><h1 id='errors'>Errors</h1>
 <p>The Checkbox API uses the following error codes:</p>
 
       </div>
