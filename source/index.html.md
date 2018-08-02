@@ -3,6 +3,8 @@ title: Checkbox 7 API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
+  - ruby
+  - python
 
 toc_footers:
 
@@ -37,7 +39,7 @@ search: true
 <aside class="warning">This documentation is for Checkbox 7 which has not been released yet. For current API documentation please visit <a href="https://www.checkbox.com/developer-center/">https://www.checkbox.com/developer-center/</a></aside>
 
 
-The Checkbox API is a REST-based JSON API that utilizes OAuth 2.0. The documentation on this page is organized by API Endpoint and code examples are provided in shell. 
+The Checkbox API is a REST-based JSON API that utilizes OAuth 2.0. The documentation on this page is organized by API Endpoint and code examples are provided in shell, ruby, and python. 
 
 To use our API you will need a active Checkbox 7 account. The API documentation provided is valid for both On-Premise and Checkbox Online customers. 
 

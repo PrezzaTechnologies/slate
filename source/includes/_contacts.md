@@ -6,22 +6,46 @@ You can utilize this endpoint to retrieve contact data, edit contacts, and delet
 
 ## Get Contacts
 
-> To get a list of contacts: 
+> Example Request
 
 ```shell
-curl -X GET -H "Content-type: application/json" -H "Authorization: Bearer {ACCESS_TOKEN}" ^
-"{ACCOUNT_NAME}/contacts?search_text=admin&sort_ascending=True&page_size=2&page_num=3"
+curl --request GET \
+  --url '{ACCOUNT_NAME}/contacts?search_text=test&sort_ascending=true&page_size=3&page_num=1'
 ```
 
-> The above command returns JSON structured like this: 
+```python
+import requests
+
+url = "{ACCOUNT_NAME}/contacts"
+
+querystring = {"search_text":"test","sort_ascending":"true","page_size":"3","page_num":"1"}
+
+response = requests.request("GET", url, params=querystring)
+
+print(response.text)
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("{ACCOUNT_NAME}/contacts?search_text=test&sort_ascending=true&page_size=3&page_num=1")
+
+http = Net::HTTP.new(url.host, url.port)
+
+request = Net::HTTP::Get.new(url)
+
+response = http.request(request)
+puts response.read_body
+```
+> Example Response
 
 ```json
 {  
    "total_count":15,
    "items":[  
       {  
-         "unique_identifier":"Test",
-         "user_name":"Test",
+         "id":"Test",
          "email":"jon.doe@gmail.com",
          "status":"Active"
       }
@@ -35,7 +59,10 @@ curl -X GET -H "Content-type: application/json" -H "Authorization: Bearer {ACCES
 }
 ```
 
-This endpoint will return a paged, filtered list of contacts.
+This endpoint will return a paged, filtered list of contacts that the authenticated user has access to. System administrators by default have access to all contacts, any lower role will only have access to contacts that are part of groups that they have access to. 
+
+To grant a user access to all contacts you can grant them access to the "Contact List" which is the complete list of contacts in the Checkbox account.
+
 
 ### HTTP Request
 
@@ -52,79 +79,169 @@ page_num | False | int | Number of page to be returned
 
 ## Get Contact
 
-> To get a list of contacts: 
+> Example Request
 
 ```shell
-curl -X GET -H "Content-type: application/json" -H "Authorization: Bearer {ACCESS_TOKEN}" ^
-"{ACCOUNT_NAME}/contacts/Test"
+curl --request GET \
+  --url '{ACCOUNT_NAME}/contacts/test'
 ```
 
-> The above command returns JSON structured like this: 
+```python
+import requests
+
+url = "{ACCOUNT_NAME}/contacts/test"
+
+response = requests.request("GET", url)
+
+print(response.text)
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("{ACCOUNT_NAME}/contacts/test")
+
+http = Net::HTTP.new(url.host, url.port)
+
+request = Net::HTTP::Get.new(url)
+
+response = http.request(request)
+puts response.read_body
+```
+
+> Example Response
 
 ```json
 {  
-   "unique_identifier":"Test",
-   "user_name":"Test",
+   "id":"Test",
    "email":"jon.doe@gmail.com",
    "status":"Active"
 }
 ```
 
-This endpoint will return the contact data for a single contact specified by its unique identifier .
+This endpoint will return the contact data for a single contact specified by its contact ID. This endpoint will only return data for the contact if the authenticated user has access to the contact being requested.
 
-`GET {ACCOUNT_NAME}/contacts/{UNIQUE_IDENTIFIER}`
+`GET {ACCOUNT_NAME}/contacts/{CONTACT_ID}`
+
 
 ## Create Contact
 
-> To create the contact: 
+> Example Request
 
 ```shell
-curl -X POST -H "Content-type: application/json" -H "Authorization: Bearer {ACCESS_TOKEN}" ^
- -d '{ "user_name": "newuser", "email": "newuser@email.com", "password":"pa$$w0rd" }' ^
- "{ACCOUNT_NAME}/contacts"
+curl --request POST \
+  --url {ACCOUNT_NAME}/contacts \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --data 'id=newuser&password=pa%24%24w0rd&email=newuser%40testemail.com'
 ```
 
-> The above command returns JSON structured like this:
+```python
+import requests
+
+url = "{ACCOUNT_NAME}/contacts"
+
+payload = "id=newuser&password=pa%24%24w0rd&email=newuser%40testemail.com"
+headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+
+response = requests.request("POST", url, data=payload, headers=headers)
+
+print(response.text)
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("{ACCOUNT_NAME}/contacts")
+
+http = Net::HTTP.new(url.host, url.port)
+
+request = Net::HTTP::Post.new(url)
+request["Content-Type"] = 'application/x-www-form-urlencoded'
+request.body = "id=newuser&password=pa%24%24w0rd&email=newuser%40testemail.com"
+
+response = http.request(request)
+puts response.read_body
+```
+> Example Response
 
 ```json
-{  
-   "unique_identifier":"Test1",
-   "user_name":"Test1",
-   "email":"jon.doe@gmail.com",
-   "status":"Active"
+{
+    "id": "newuser",
+    "email": "newuser@testemail.com",
+    "status": "Active"
 }
 ```
 
-This endpoint will create a contact with the username, email, and password specified. 
+This endpoint will create a contact with the id, email, and password specified. It will also add the contact to the specified group IDs. 
+
+The password field is optional. If no password is provided the system will auto generate one. 
+
+Group ID list is optional for users with access to the "Contact List". Any user without access to the "Contact List" must provide a group ID for a group they have access to or the contact will not be created. 
 
 ### HTTP Request
 
 `POST {ACCOUNT_NAME}/contacts`
 
+### Headers
+
+Content-Type |application/x-www-form-urlencoded
+
 ### Request Body Arguments
 
 Parameter | Required | Data Type | Description
 --------- | ------- | ------- | -----------
-user_name | True  | string | Contact name
+id | True  | string | Contact id
 password | True  | string | Contact Password
 email | True  | string | Contact Email
 
 
 ## Edit Contact
 
-> To edit the contact: 
+> Example Request
 
 ```shell
-curl -X POST -H "Content-type: application/json" -H "Authorization: Bearer {ACCESS_TOKEN}" ^
- -d '{ "user_name": "test22", "email": "newuser2@email.com", "password":"pa$$w0rd", "status": "Active" }' ^
- "{ACCOUNT_NAME}/contacts/test1"
+curl --request PUT \
+  --url {ACCOUNT_NAME}/contacts/newuser \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --data 'id=newuser&email=newuser2%40email.com&password=pas%24sw0rd&status=Active'
 ```
 
-> The above command returns JSON structured like this
+```python
+import requests
+
+url = "{ACCOUNT_NAME}/contacts/newuser"
+
+payload = "id=newuser&email=newuser2%40email.com&password=pas%24sw0rd&status=Active"
+headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+
+response = requests.request("PUT", url, data=payload, headers=headers)
+
+print(response.text)
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("{ACCOUNT_NAME}/contacts/newuser")
+
+http = Net::HTTP.new(url.host, url.port)
+
+request = Net::HTTP::Put.new(url)
+request["Content-Type"] = 'application/x-www-form-urlencoded'
+request.body = "id=newuser&email=newuser2%40email.com&password=pas%24sw0rd&status=Active"
+
+response = http.request(request)
+puts response.read_body
+```
+
+> Example Response
 
 ```json
 {  
-   "unique_identifier":"Test1",
+   "unique_identifier":"Test22",
    "user_name":"Test1",
    "email":"jon.doe@gmail.com",
    "status":"Active"
@@ -137,36 +254,21 @@ This endpoint can be utilized to edit a contacts username, email or password, or
 
 `PUT {ACCOUNT_NAME}/contacts/{UNIQUE_IDENTIFIER}`
 
+### Headers
+
+Content-Type | application/x-www-form-urlencoded
+
 ### Request Body Arguments
 
 Parameter | Required | Data Type | Description
 --------- | ------- | ------- | -----------
-user_name | False | string | Contact name
+id | False | string | Contact name
 password | False | string | Contact Password
 email | False | string | Contact Email
 status | False | enum | For status specifying (default=active): Active or LockedOut 
 
 
 ## Delete Contact
-
-> To delete the contact
-
-```shell
-curl -X DELETE -H "Content-type: application/json" -H "Authorization: Bearer {ACCESS_TOKEN}" ^
- "{ACCOUNT_NAME}/contacts/test1"
-```
-
-> The above command returns an HTTP status code of 200 OK when successful
-
-This endpoint can be utilized to delete a contact. This will not prompt for a confirmation and this action cannot be undone. 
-
-### HTTP Request
-
-` DELETE {ACCOUNT_NAME}/contacts/{UNIQUE_IDENTIFIER} `
-
-<aside class="warning">Deleting a contact is permanent. Once a contact is deleted they cannot be restored.</aside>
-
-
 ## Get Contact Group Memberships
 ## Add Contact to Group 
 ## Remove Contact from Group
