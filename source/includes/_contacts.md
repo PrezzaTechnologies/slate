@@ -132,8 +132,8 @@ This endpoint will return the contact data for a single contact specified by its
 ```shell
 curl --request POST \
   --url {ACCOUNT_NAME}/contacts \
-  --header 'Content-Type: application/x-www-form-urlencoded' \
-  --data 'id=newuser&password=pa%24%24w0rd&email=newuser%40testemail.com'
+  --header 'Content-Type: application/json' \
+  --data ' { "id": "newuser", "email": "newuser@email.com", "password":"pa$$w0rd" }'
 ```
 
 ```python
@@ -141,8 +141,8 @@ import requests
 
 url = "{ACCOUNT_NAME}/contacts"
 
-payload = "id=newuser&password=pa%24%24w0rd&email=newuser%40testemail.com"
-headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+payload = " { \"id\": \"newuser\", \"email\": \"newuser@email.com\", \"password\":\"pa$$w0rd\" }"
+headers = {'Content-Type': 'application/json'}
 
 response = requests.request("POST", url, data=payload, headers=headers)
 
@@ -158,8 +158,8 @@ url = URI("{ACCOUNT_NAME}/contacts")
 http = Net::HTTP.new(url.host, url.port)
 
 request = Net::HTTP::Post.new(url)
-request["Content-Type"] = 'application/x-www-form-urlencoded'
-request.body = "id=newuser&password=pa%24%24w0rd&email=newuser%40testemail.com"
+request["Content-Type"] = 'application/json'
+request.body = " { \"id\": \"newuser\", \"email\": \"newuser@email.com\", \"password\":\"pa$$w0rd\" }"
 
 response = http.request(request)
 puts response.read_body
@@ -184,10 +184,6 @@ Group ID list is optional for users with access to the "Contact List". Any user 
 
 `POST {ACCOUNT_NAME}/contacts`
 
-### Headers
-
-Content-Type |application/x-www-form-urlencoded
-
 ### Request Body Arguments
 
 Parameter | Required | Data Type | Description
@@ -196,7 +192,6 @@ id | True  | string | Contact id
 password | True  | string | Contact Password
 email | True  | string | Contact Email
 
-
 ## Edit Contact
 
 > Example Request
@@ -204,8 +199,8 @@ email | True  | string | Contact Email
 ```shell
 curl --request PUT \
   --url {ACCOUNT_NAME}/contacts/newuser \
-  --header 'Content-Type: application/x-www-form-urlencoded' \
-  --data 'id=newuser&email=newuser2%40email.com&password=pas%24sw0rd&status=Active'
+  --header 'Content-Type: application/json' \
+  --data '{ "id": "test22", "email": "newuser2@email.com", "password":"pa$$w0rd", "status": "Active" }'
 ```
 
 ```python
@@ -213,8 +208,8 @@ import requests
 
 url = "{ACCOUNT_NAME}/contacts/newuser"
 
-payload = "id=newuser&email=newuser2%40email.com&password=pas%24sw0rd&status=Active"
-headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+payload = "{ \"id\": \"test22\", \"email\": \"newuser2@email.com\", \"password\":\"pa$$w0rd\", \"status\": \"Active\" }"
+headers = {'Content-Type': 'application/json'}
 
 response = requests.request("PUT", url, data=payload, headers=headers)
 
@@ -230,8 +225,8 @@ url = URI("{ACCOUNT_NAME}/contacts/newuser")
 http = Net::HTTP.new(url.host, url.port)
 
 request = Net::HTTP::Put.new(url)
-request["Content-Type"] = 'application/x-www-form-urlencoded'
-request.body = "id=newuser&email=newuser2%40email.com&password=pas%24sw0rd&status=Active"
+request["Content-Type"] = 'application/json'
+request.body = "{ \"id\": \"test22\", \"email\": \"newuser2@email.com\", \"password\":\"pa$$w0rd\", \"status\": \"Active\" }"
 
 response = http.request(request)
 puts response.read_body
@@ -253,10 +248,6 @@ This endpoint can be utilized to edit a contacts username, email or password, or
 ### HTTP Request
 
 `PUT {ACCOUNT_NAME}/contacts/{UNIQUE_IDENTIFIER}`
-
-### Headers
-
-Content-Type | application/x-www-form-urlencoded
 
 ### Request Body Arguments
 
