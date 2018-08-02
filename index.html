@@ -917,14 +917,14 @@ You must replace <code>{ACCOUNT_NAME}</code> with your account name.
 </blockquote>
 <pre class="highlight shell tab-shell"><code>curl --request POST <span class="se">\</span>
   --url <span class="o">{</span>ACCOUNT_NAME<span class="o">}</span>/contacts <span class="se">\</span>
-  --header <span class="s1">'Content-Type: application/x-www-form-urlencoded'</span> <span class="se">\</span>
-  --data <span class="s1">'id=newuser&amp;password=pa%24%24w0rd&amp;email=newuser%40testemail.com'</span>
+  --header <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+  --data <span class="s1">' { "id": "newuser", "email": "newuser@email.com", "password":"pa$$w0rd" }'</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"{ACCOUNT_NAME}/contacts"</span>
 
-<span class="n">payload</span> <span class="o">=</span> <span class="s">"id=newuser&amp;password=pa</span><span class="si">%24%24</span><span class="s">w0rd&amp;email=newuser</span><span class="si">%40</span><span class="s">testemail.com"</span>
-<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/x-www-form-urlencoded'</span><span class="p">}</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="s">" { </span><span class="se">\"</span><span class="s">id</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">newuser</span><span class="se">\"</span><span class="s">, </span><span class="se">\"</span><span class="s">email</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">newuser@email.com</span><span class="se">\"</span><span class="s">, </span><span class="se">\"</span><span class="s">password</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">pa$$w0rd</span><span class="se">\"</span><span class="s"> }"</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span><span class="p">}</span>
 
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s">"POST"</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
@@ -937,8 +937,8 @@ You must replace <code>{ACCOUNT_NAME}</code> with your account name.
 <span class="n">http</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">url</span><span class="p">.</span><span class="nf">host</span><span class="p">,</span> <span class="n">url</span><span class="p">.</span><span class="nf">port</span><span class="p">)</span>
 
 <span class="n">request</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Post</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="n">request</span><span class="p">[</span><span class="s2">"Content-Type"</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'application/x-www-form-urlencoded'</span>
-<span class="n">request</span><span class="p">.</span><span class="nf">body</span> <span class="o">=</span> <span class="s2">"id=newuser&amp;password=pa%24%24w0rd&amp;email=newuser%40testemail.com"</span>
+<span class="n">request</span><span class="p">[</span><span class="s2">"Content-Type"</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'application/json'</span>
+<span class="n">request</span><span class="p">.</span><span class="nf">body</span> <span class="o">=</span> <span class="s2">" { </span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">newuser</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">email</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">newuser@email.com</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">password</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">pa$$w0rd</span><span class="se">\"</span><span class="s2"> }"</span>
 
 <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="nf">request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 <span class="nb">puts</span> <span class="n">response</span><span class="p">.</span><span class="nf">read_body</span>
@@ -959,8 +959,6 @@ You must replace <code>{ACCOUNT_NAME}</code> with your account name.
 <p>Group ID list is optional for users with access to the &quot;Contact List&quot;. Any user without access to the &quot;Contact List&quot; must provide a group ID for a group they have access to or the contact will not be created. </p>
 <h3 id='http-request-2'>HTTP Request</h3>
 <p><code>POST {ACCOUNT_NAME}/contacts</code></p>
-<h3 id='headers'>Headers</h3>
-<p>Content-Type |application/x-www-form-urlencoded</p>
 <h3 id='request-body-arguments'>Request Body Arguments</h3>
 <table><thead>
 <tr>
@@ -995,14 +993,14 @@ You must replace <code>{ACCOUNT_NAME}</code> with your account name.
 </blockquote>
 <pre class="highlight shell tab-shell"><code>curl --request PUT <span class="se">\</span>
   --url <span class="o">{</span>ACCOUNT_NAME<span class="o">}</span>/contacts/newuser <span class="se">\</span>
-  --header <span class="s1">'Content-Type: application/x-www-form-urlencoded'</span> <span class="se">\</span>
-  --data <span class="s1">'id=newuser&amp;email=newuser2%40email.com&amp;password=pas%24sw0rd&amp;status=Active'</span>
+  --header <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+  --data <span class="s1">'{ "id": "test22", "email": "newuser2@email.com", "password":"pa$$w0rd", "status": "Active" }'</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"{ACCOUNT_NAME}/contacts/newuser"</span>
 
-<span class="n">payload</span> <span class="o">=</span> <span class="s">"id=newuser&amp;email=newuser2</span><span class="si">%40</span><span class="s">email.com&amp;password=pas</span><span class="si">%24</span><span class="s">sw0rd&amp;status=Active"</span>
-<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/x-www-form-urlencoded'</span><span class="p">}</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="s">"{ </span><span class="se">\"</span><span class="s">id</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">test22</span><span class="se">\"</span><span class="s">, </span><span class="se">\"</span><span class="s">email</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">newuser2@email.com</span><span class="se">\"</span><span class="s">, </span><span class="se">\"</span><span class="s">password</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">pa$$w0rd</span><span class="se">\"</span><span class="s">, </span><span class="se">\"</span><span class="s">status</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Active</span><span class="se">\"</span><span class="s"> }"</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span><span class="p">}</span>
 
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s">"PUT"</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
@@ -1015,8 +1013,8 @@ You must replace <code>{ACCOUNT_NAME}</code> with your account name.
 <span class="n">http</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">url</span><span class="p">.</span><span class="nf">host</span><span class="p">,</span> <span class="n">url</span><span class="p">.</span><span class="nf">port</span><span class="p">)</span>
 
 <span class="n">request</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Put</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="n">request</span><span class="p">[</span><span class="s2">"Content-Type"</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'application/x-www-form-urlencoded'</span>
-<span class="n">request</span><span class="p">.</span><span class="nf">body</span> <span class="o">=</span> <span class="s2">"id=newuser&amp;email=newuser2%40email.com&amp;password=pas%24sw0rd&amp;status=Active"</span>
+<span class="n">request</span><span class="p">[</span><span class="s2">"Content-Type"</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'application/json'</span>
+<span class="n">request</span><span class="p">.</span><span class="nf">body</span> <span class="o">=</span> <span class="s2">"{ </span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">test22</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">email</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">newuser2@email.com</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">password</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">pa$$w0rd</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">status</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">Active</span><span class="se">\"</span><span class="s2"> }"</span>
 
 <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="nf">request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 <span class="nb">puts</span> <span class="n">response</span><span class="p">.</span><span class="nf">read_body</span>
@@ -1034,8 +1032,6 @@ You must replace <code>{ACCOUNT_NAME}</code> with your account name.
 <p>This endpoint can be utilized to edit a contacts username, email or password, or enable / disable the contacts account. Contact profile property data can be edited using the edit contact profile data endpoint documented below.</p>
 <h3 id='http-request-3'>HTTP Request</h3>
 <p><code>PUT {ACCOUNT_NAME}/contacts/{UNIQUE_IDENTIFIER}</code></p>
-<h3 id='headers-2'>Headers</h3>
-<p>Content-Type | application/x-www-form-urlencoded</p>
 <h3 id='request-body-arguments-2'>Request Body Arguments</h3>
 <table><thead>
 <tr>
